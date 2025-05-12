@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -35,7 +36,9 @@ public class Calculator extends javax.swing.JFrame {
         Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\sasan\\Downloads\\cal.png");
         setIconImage(icon);
         setResizable(false);
-        jTextField1.setFont(new Font("Arial", Font.BOLD, 38));
+        setLayout(null);
+        jTextField1.setBounds(10, 10, 300, 50);
+        jTextField1.setFont(new Font("Arial", Font.BOLD, 30));
         jTextField1.setHorizontalAlignment(JTextField.RIGHT);
         jTextField1.setEditable(false);
         jTextField1.setBorder(null);
@@ -84,6 +87,13 @@ public class Calculator extends javax.swing.JFrame {
         jButton24 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTextField1.setName(""); // NOI18N
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("%");
@@ -394,15 +404,20 @@ public class Calculator extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        NumEnter1 = Double.parseDouble(jTextField1.getText());
-        jTextField1.setText("");
-        double sqr = Math.pow(NumEnter1, 2);
-        String string = Double.toString(sqr);
-        if (string.endsWith(".0")) {
-            jTextField1.setText(string.replace(".0", ""));
-        }else{
-            jTextField1.setText(string);
+        try {
+            NumEnter1 = Double.parseDouble(jTextField1.getText());
+            jTextField1.setText("");
+            double sqr = Math.pow(NumEnter1, 2);
+            String string = Double.toString(sqr);
+            if (string.endsWith(".0")) {
+                jTextField1.setText(string.replace(".0", ""));
+            } else {
+                jTextField1.setText(string);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -457,30 +472,50 @@ public class Calculator extends javax.swing.JFrame {
 
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
         // TODO add your handling code here:
-        NumEnter1 = Double.parseDouble(jTextField1.getText());
-        jTextField1.setText("");
-        op = "/";
+        try {
+            NumEnter1 = Double.parseDouble(jTextField1.getText());
+            jTextField1.setText("");
+            op = "/";
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton23ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here:
-        NumEnter1 = Double.parseDouble(jTextField1.getText());
-        jTextField1.setText("");
-        op = "*";
+        try {
+            NumEnter1 = Double.parseDouble(jTextField1.getText());
+            jTextField1.setText("");
+            op = "*";
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton24ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
-        NumEnter1 = Double.parseDouble(jTextField1.getText());
-        jTextField1.setText("");
-        op = "-";
+        try {
+            NumEnter1 = Double.parseDouble(jTextField1.getText());
+            jTextField1.setText("");
+            op = "-";
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
-        NumEnter1 = Double.parseDouble(jTextField1.getText());
-        jTextField1.setText("");
-        op = "+";
+        try {
+            NumEnter1 = Double.parseDouble(jTextField1.getText());
+            jTextField1.setText("");
+            op = "+";
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton16ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
@@ -502,9 +537,13 @@ public class Calculator extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        double nums = Double.parseDouble(String.valueOf(jTextField1.getText()));
-        nums = nums * (-1);
-        jTextField1.setText(String.valueOf(nums));
+        try {
+            double nums = Double.parseDouble(String.valueOf(jTextField1.getText()));
+            nums = nums * (-1);
+            jTextField1.setText(String.valueOf(nums));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
@@ -527,60 +566,79 @@ public class Calculator extends javax.swing.JFrame {
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         // TODO add your handling code here:
-        NumEnter2 = Double.parseDouble(jTextField1.getText());
-        if (op == "+") {
-            Result = NumEnter1 + NumEnter2;
-            jTextField1.setText(String.valueOf(Result));
-        } else if (op == "-") {
-            Result = NumEnter1 - NumEnter2;
-            jTextField1.setText(String.valueOf(Result));
-        } else if (op == "*") {
-            Result = NumEnter1 * NumEnter2;
-            jTextField1.setText(String.valueOf(Result));
-        } else if (op == "/") {
-            Result = NumEnter1 / NumEnter2;
-            jTextField1.setText(String.valueOf(Result));
-        } else if (op == "%") {
-            Result = NumEnter1 % NumEnter2;
-            jTextField1.setText(String.valueOf(Result));
+        try {
+            NumEnter2 = Double.parseDouble(jTextField1.getText());
+            if (op == "+") {
+                Result = NumEnter1 + NumEnter2;
+                jTextField1.setText(String.valueOf(Result));
+            } else if (op == "-") {
+                Result = NumEnter1 - NumEnter2;
+                jTextField1.setText(String.valueOf(Result));
+            } else if (op == "*") {
+                Result = NumEnter1 * NumEnter2;
+                jTextField1.setText(String.valueOf(Result));
+            } else if (op == "/") {
+                Result = NumEnter1 / NumEnter2;
+                jTextField1.setText(String.valueOf(Result));
+            } else if (op == "%") {
+                Result = NumEnter1 % NumEnter2;
+                jTextField1.setText(String.valueOf(Result));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        NumEnter1 = Double.parseDouble(jTextField1.getText());
-        jTextField1.setText("");
-        op = "%";
+        try {
+            NumEnter1 = Double.parseDouble(jTextField1.getText());
+            jTextField1.setText("");
+            op = "%";
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
-        NumEnter1 = Double.parseDouble(jTextField1.getText());
-        jTextField1.setText("");
-        double sqr = Math.sqrt(NumEnter1);
-        String string = Double.toString(sqr);
-        if (string.endsWith(".0")) {
-            jTextField1.setText(string.replace(".0", ""));
-        }else{
-            jTextField1.setText(string);
+        try {
+            NumEnter1 = Double.parseDouble(jTextField1.getText());
+            jTextField1.setText("");
+            double sqr = Math.sqrt(NumEnter1);
+            String string = Double.toString(sqr);
+            if (string.endsWith(".0")) {
+                jTextField1.setText(string.replace(".0", ""));
+            } else {
+                jTextField1.setText(string);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         try {
-                    double x = Double.parseDouble(jTextField1.getText());
+        try {
+            double x = Double.parseDouble(jTextField1.getText());
 
-                    if (x == 0) {
-                        jTextField1.setText("Undefined (divide by 0)");
-                    } else {
-                        double result = 1.0 / x;
-                        jTextField1.setText(String.valueOf(result));
-                    }
-                } catch (NumberFormatException ex) {
-                    jTextField1.setText("Invalid input");
-                }
+            if (x == 0) {
+                jTextField1.setText("Undefined (divide by 0)");
+            } else {
+                double result = 1.0 / x;
+                jTextField1.setText(String.valueOf(result));
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
