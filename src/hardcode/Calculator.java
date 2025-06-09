@@ -1,6 +1,7 @@
 package hardcode;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -182,7 +183,7 @@ public class Calculator extends JFrame implements ActionListener {
     
     public static void main(String[] args) {
         
-        FlatDarkLaf.setup();
+        FlatMacDarkLaf.setup();
         
         new Calculator();
     }

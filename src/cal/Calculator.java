@@ -5,6 +5,7 @@
 package cal;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -667,7 +668,7 @@ public class Calculator extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        FlatDarkLaf.setup();
+        FlatMacDarkLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
