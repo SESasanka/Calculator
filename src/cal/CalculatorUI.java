@@ -2,15 +2,22 @@ package cal;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class CalculatorUI extends JFrame implements ActionListener {
 
@@ -21,18 +28,32 @@ public class CalculatorUI extends JFrame implements ActionListener {
 
     public CalculatorUI() {
         setTitle("My Calculator");
-        setSize(300, 400);
+        Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\sasan\\Downloads\\cal.png");
+        setIconImage(icon);
+        setSize(350, 450);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setResizable(false);
         setLocationRelativeTo(null);
 
         // Display Field
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+
+        JLabel titleLabel = new JLabel("Standard Calculator");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
+        titleLabel.setHorizontalAlignment(SwingConstants.LEADING);
+        topPanel.add(titleLabel);
+
         display = new JTextField("0");
-        display.setFont(new Font("Arial", Font.BOLD, 24));
-        display.setHorizontalAlignment(JTextField.RIGHT);
+        display.setFont(new Font("Arial", Font.BOLD, 35));
+        display.setHorizontalAlignment(SwingConstants.RIGHT);
         display.setEditable(false);
-        add(display, BorderLayout.NORTH);
+        display.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        topPanel.add(display);
+        
+        add(topPanel, BorderLayout.NORTH);
 
         // Buttons Panel
         String[] buttons = {
@@ -52,6 +73,13 @@ public class CalculatorUI extends JFrame implements ActionListener {
             button.setFont(new Font("Arial", Font.BOLD, 16));
             button.addActionListener(this);
             panel.add(button);
+        }
+        Component last = panel.getComponent(panel.getComponentCount() - 1);
+        if (last instanceof JButton button && "=".equals(button.getText())) {
+            button.setBackground(new Color(0, 122, 255)); // Blue
+            button.setForeground(Color.WHITE);
+            button.setOpaque(true);
+            button.setBorderPainted(false);
         }
 
         add(panel, BorderLayout.CENTER);
