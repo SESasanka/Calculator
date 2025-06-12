@@ -1,191 +1,246 @@
 package hardcode;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class Calculator extends JFrame implements ActionListener {
-    
-    JTextField display;
-    JButton[] numberButtons = new JButton[10];
-    JButton addButton, subButton, mulButton, divButton, PerButton;
-    JButton decButton, equButton, delButton, clrButton;
-    
-    JPanel panel;
-    
-    double num1 = 0, num2 = 0, result = 0;
-    char operator;
-    
+public class Calculator extends JFrame {
+
+    private JTextField display;
+    private double num1 = 0, num2 = 0;
+    private String operator = "";
+
     public Calculator() {
-        setTitle("Java Swing Calculator");
-        setSize(420, 550);
-        setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
+        this.setTitle("My Calculator");
+        Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\sasan\\Downloads\\cal.png");
+        setIconImage(icon);
+        this.setSize(380, 550);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setLayout(new BorderLayout());
 
-        // Display field
-        display = new JTextField();
-        display.setBounds(50, 25, 300, 50);
-        display.setFont(new Font("Arial", Font.BOLD, 24));
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+
+        JLabel titleLabel = new JLabel("Standard Calculator");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
+        titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        topPanel.add(titleLabel);
+
+        display = new JTextField("0");
+        display.setFont(new Font("Arial", Font.BOLD, 35));
+        display.setHorizontalAlignment(SwingConstants.RIGHT);
         display.setEditable(false);
-        display.setHorizontalAlignment(JTextField.RIGHT);
-        add(display);
+        display.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        topPanel.add(display);
 
-        // Create buttons
-        addButton = new JButton("+");
-        subButton = new JButton("-");
-        mulButton = new JButton("*");
-        divButton = new JButton("/");
-        decButton = new JButton(".");
-        equButton = new JButton("=");
-        PerButton = new JButton("%");
-        equButton = new JButton("=");
-        delButton = new JButton("Del");
-        clrButton = new JButton("C");
+        add(topPanel, BorderLayout.NORTH);
 
-        // Store function buttons
-        JButton[] functionButtons = {
-            addButton, subButton, mulButton, divButton, PerButton,
-            decButton, equButton, delButton, clrButton
-        };
+        // Button Panel
+        JPanel panel = new JPanel(new GridLayout(6, 4, 5, 5));
 
-        // Button styling and event handling
-        for (JButton btn : functionButtons) {
-            btn.addActionListener(this);
-            btn.setFont(new Font("Arial", Font.BOLD, 18));
-            btn.setFocusable(false);
+        // Row 1
+        addButton(panel, "CE", new ClearEntryListener());
+        addButton(panel, "C", new ClearAllListener());
+        addButton(panel, "X", new BackspaceListener());
+        addButton(panel, "%", new PercentageListener());
+
+        // Row 2
+        addButton(panel, "1 / x", new InverseListener());
+        addButton(panel, "x²", new SquareListener());
+        addButton(panel, "√x", new SquareRootListener());
+        addButton(panel, "/", new OperatorListener("/"));
+
+        // Row 3
+        addButton(panel, "7", new DigitListener("7"));
+        addButton(panel, "8", new DigitListener("8"));
+        addButton(panel, "9", new DigitListener("9"));
+        addButton(panel, "*", new OperatorListener("*"));
+
+        // Row 4
+        addButton(panel, "4", new DigitListener("4"));
+        addButton(panel, "5", new DigitListener("5"));
+        addButton(panel, "6", new DigitListener("6"));
+        addButton(panel, "-", new OperatorListener("-"));
+
+        // Row 5
+        addButton(panel, "1", new DigitListener("1"));
+        addButton(panel, "2", new DigitListener("2"));
+        addButton(panel, "3", new DigitListener("3"));
+        addButton(panel, "+", new OperatorListener("+"));
+
+        // Row 6
+        addButton(panel, "±", new SignChangeListener());
+        addButton(panel, "0", new DigitListener("0"));
+        addButton(panel, ".", new DecimalListener());
+        addButton(panel, "=", new EqualListener());
+
+        Component last = panel.getComponent(panel.getComponentCount() - 1);
+        if (last instanceof JButton button && "=".equals(button.getText())) {
+            button.setBackground(new Color(0, 122, 255)); // Blue
+            button.setForeground(Color.WHITE);
+            button.setOpaque(true);
+            button.setBorderPainted(false);
         }
 
-        // Number buttons 0-9
-        for (int i = 0; i < 10; i++) {
-            numberButtons[i] = new JButton(String.valueOf(i));
-            numberButtons[i].addActionListener(this);
-            numberButtons[i].setFont(new Font("Arial", Font.BOLD, 18));
-            numberButtons[i].setFocusable(false);
-        }
-
-        // Panel for number and operator buttons
-        panel = new JPanel();
-        panel.setBounds(50, 100, 300, 300);
-        panel.setLayout(new GridLayout(4, 4, 10, 10));
-
-        // Add buttons to panel
-        panel.add(numberButtons[1]);
-        panel.add(numberButtons[2]);
-        panel.add(numberButtons[3]);
-        panel.add(addButton);
-        panel.add(numberButtons[4]);
-        panel.add(numberButtons[5]);
-        panel.add(numberButtons[6]);
-        panel.add(subButton);
-        panel.add(numberButtons[7]);
-        panel.add(numberButtons[8]);
-        panel.add(numberButtons[9]);
-        panel.add(mulButton);
-        panel.add(decButton);
-        panel.add(numberButtons[0]);
-        panel.add(equButton);
-        panel.add(divButton);
-        
-        add(panel);
-
-        // Add delete and clear buttons
-        delButton.setBounds(50, 420, 145, 50);
-        clrButton.setBounds(205, 420, 145, 50);
-        add(delButton);
-        add(clrButton);
-
-        // Make frame visible
+        add(panel, BorderLayout.CENTER);
         setVisible(true);
     }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        for (int i = 0; i < 10; i++) {
-            if (e.getSource() == numberButtons[i]) {
-                display.setText(display.getText().concat(String.valueOf(i)));
-            }
+
+    private void addButton(JPanel panel, String label, ActionListener listener) {
+        JButton button = new JButton(label);
+        button.setFont(new Font("Arial", Font.PLAIN, 18));
+        button.addActionListener(listener);
+        panel.add(button);
+    }
+
+    // === Inner Classes for ActionListeners ===
+    private class DigitListener implements ActionListener {
+
+        private String digit;
+
+        public DigitListener(String digit) {
+            this.digit = digit;
         }
 
-        // Handle decimal point
-        if (e.getSource() == decButton) {
+        public void actionPerformed(ActionEvent e) {
+            if (display.getText().equals("0")) {
+                display.setText(digit);
+            } else {
+                display.setText(display.getText() + digit);
+            }
+        }
+    }
+
+    private class OperatorListener implements ActionListener {
+
+        private String op;
+
+        public OperatorListener(String op) {
+            this.op = op;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            num1 = Double.parseDouble(display.getText());
+            operator = op;
+            display.setText("0");
+        }
+    }
+
+    private class EqualListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            num2 = Double.parseDouble(display.getText());
+            double result = 0;
+            switch (operator) {
+                case "+" ->
+                    result = num1 + num2;
+                case "-" ->
+                    result = num1 - num2;
+                case "*" ->
+                    result = num1 * num2;
+                case "/" ->
+                    result = num2 != 0 ? num1 / num2 : Double.NaN;
+//                case "%" ->
+//                    result = (num1 * num2) / 100;
+            }
+            display.setText(String.valueOf(result));
+            operator = "";
+        }
+    }
+
+    private class PercentageListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            double val = Double.parseDouble(display.getText());
+            display.setText(String.valueOf(val / 100));
+        }
+    }
+
+    private class DecimalListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
             if (!display.getText().contains(".")) {
-                display.setText(display.getText().concat("."));
+                display.setText(display.getText() + ".");
             }
         }
+    }
 
-        // Handle operators
-        if (e.getSource() == addButton) {
-            num1 = Double.parseDouble(display.getText());
-            operator = '+';
-            display.setText("");
-        }
-        if (e.getSource() == subButton) {
-            num1 = Double.parseDouble(display.getText());
-            operator = '-';
-            display.setText("");
-        }
-        if (e.getSource() == mulButton) {
-            num1 = Double.parseDouble(display.getText());
-            operator = '*';
-            display.setText("");
-        }
-        if (e.getSource() == divButton) {
-            num1 = Double.parseDouble(display.getText());
-            operator = '/';
-            display.setText("");
-        }
+    private class ClearEntryListener implements ActionListener {
 
-        // Handle equals button
-        if (e.getSource() == equButton) {
-            try {
-                num2 = Double.parseDouble(display.getText());
-                switch (operator) {
-                    case '+':
-                        result = num1 + num2;
-                        break;
-                    case '-':
-                        result = num1 - num2;
-                        break;
-                    case '*':
-                        result = num1 * num2;
-                        break;
-                    case '/':
-                        result = (num2 != 0) ? num1 / num2 : 0;
-                        break;
-                }
-                display.setText(String.valueOf(result));
-                num1 = result;
-            } catch (Exception ex) {
+        public void actionPerformed(ActionEvent e) {
+            display.setText("0");
+        }
+    }
+
+    private class ClearAllListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            display.setText("0");
+            num1 = num2 = 0;
+            operator = "";
+        }
+    }
+
+    private class BackspaceListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            String text = display.getText();
+            if (text.length() > 1) {
+                display.setText(text.substring(0, text.length() - 1));
+            } else {
+                display.setText("0");
+            }
+        }
+    }
+
+    private class InverseListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            double val = Double.parseDouble(display.getText());
+            if (val != 0) {
+                display.setText(String.valueOf(1 / val));
+            } else {
                 display.setText("Error");
             }
         }
+    }
 
-        // Handle clear
-        if (e.getSource() == clrButton) {
-            display.setText("");
+    private class SquareListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            double val = Double.parseDouble(display.getText());
+            display.setText(String.valueOf(val * val));
         }
+    }
 
-        // Handle delete
-        if (e.getSource() == delButton) {
-            String text = display.getText();
-            if (!text.isEmpty()) {
-                display.setText(text.substring(0, text.length() - 1));
+    private class SquareRootListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            double val = Double.parseDouble(display.getText());
+            if (val >= 0) {
+                display.setText(String.valueOf(Math.sqrt(val)));
+            } else {
+                display.setText("Error");
             }
         }
     }
-    
+
+    private class SignChangeListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            double val = Double.parseDouble(display.getText());
+            display.setText(String.valueOf(-val));
+        }
+    }
+
+    // === Main method ===
     public static void main(String[] args) {
-        
         FlatMacDarkLaf.setup();
-        
-        new Calculator();
+        SwingUtilities.invokeLater(Calculator::new);
     }
 }
