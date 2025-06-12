@@ -1,6 +1,5 @@
 package hardcode;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -15,7 +14,7 @@ public class Calculator extends JFrame implements ActionListener {
     
     JTextField display;
     JButton[] numberButtons = new JButton[10];
-    JButton addButton, subButton, mulButton, divButton;
+    JButton addButton, subButton, mulButton, divButton, PerButton;
     JButton decButton, equButton, delButton, clrButton;
     
     JPanel panel;
@@ -46,12 +45,14 @@ public class Calculator extends JFrame implements ActionListener {
         divButton = new JButton("/");
         decButton = new JButton(".");
         equButton = new JButton("=");
+        PerButton = new JButton("%");
+        equButton = new JButton("=");
         delButton = new JButton("Del");
         clrButton = new JButton("C");
 
         // Store function buttons
         JButton[] functionButtons = {
-            addButton, subButton, mulButton, divButton,
+            addButton, subButton, mulButton, divButton, PerButton,
             decButton, equButton, delButton, clrButton
         };
 
