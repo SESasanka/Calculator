@@ -37,7 +37,7 @@ public class Calculator extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         display = new JTextField("0");
         display.setFont(new Font("Arial", Font.BOLD, 35));
@@ -134,10 +134,20 @@ public class Calculator extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-            if (display.getText().equals("0")) {
+            String current = display.getText();
+            if (current.equals("Value too large") || current.equals("Value too small") || current.equals("Error")) {
+                display.setText(digit);
+                return;
+            }
+            int digitCount = current.replace("-", "").replace(".", "").length();
+            if (digitCount >= 10) {
+                Toolkit.getDefaultToolkit().beep();
+                return;
+            }
+            if (current.equals("0")) {
                 display.setText(digit);
             } else {
-                display.setText(display.getText() + digit);
+                display.setText(current + digit);
             }
         }
     }
@@ -171,15 +181,9 @@ public class Calculator extends JFrame {
                     result = num1 * num2;
                 case "/" ->
                     result = num2 != 0 ? num1 / num2 : Double.NaN;
-//                case "%" ->
-//                    result = (num1 * num2) / 100;
             }
 
             setDisplayValue(result);
-//            display.setText(String.valueOf(result));
-
-            display.setText(String.valueOf(result));
-
             operator = "";
         }
     }
@@ -188,12 +192,7 @@ public class Calculator extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
-
             setDisplayValue(val / 100);
-//            display.setText(String.valueOf(val / 100));
-
-            display.setText(String.valueOf(val / 100));
-
         }
     }
 
@@ -239,11 +238,7 @@ public class Calculator extends JFrame {
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
             if (val != 0) {
-
                 setDisplayValue(1 / val);
-
-                display.setText(String.valueOf(1 / val));
-
             } else {
                 display.setText("Error");
             }
@@ -254,11 +249,7 @@ public class Calculator extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
-
             setDisplayValue(val * val);
-
-            display.setText(String.valueOf(val * val));
-
         }
     }
 
@@ -267,11 +258,7 @@ public class Calculator extends JFrame {
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
             if (val >= 0) {
-
                 setDisplayValue(Math.sqrt(val));
-
-                display.setText(String.valueOf(Math.sqrt(val)));
-
             } else {
                 display.setText("Error");
             }
@@ -282,11 +269,7 @@ public class Calculator extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
-
             setDisplayValue(-val);
-
-            display.setText(String.valueOf(-val));
-
         }
     }
 
