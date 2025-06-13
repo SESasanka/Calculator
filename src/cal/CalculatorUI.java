@@ -10,8 +10,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +22,6 @@ import javax.swing.SwingConstants;
 public class CalculatorUI extends JFrame implements ActionListener {
 
     JTextField display;
-    JLabel label;
     String operator;
     double num1, num2, result;
 
@@ -38,13 +37,13 @@ public class CalculatorUI extends JFrame implements ActionListener {
 
         // Display Field
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Standard Calculator");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
-        titleLabel.setHorizontalAlignment(SwingConstants.LEADING);
-        topPanel.add(titleLabel);
+        titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
 
         display = new JTextField("0");
         display.setFont(new Font("Arial", Font.BOLD, 35));
@@ -52,8 +51,11 @@ public class CalculatorUI extends JFrame implements ActionListener {
         display.setEditable(false);
         display.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         topPanel.add(display);
-        
-        add(topPanel, BorderLayout.NORTH);
+        topPanel.add(titleLabel);
+
+        topPanel.add(titleLabel, BorderLayout.NORTH);
+        topPanel.add(display, BorderLayout.SOUTH);
+        this.add(topPanel, BorderLayout.NORTH);
 
         // Buttons Panel
         String[] buttons = {
@@ -86,6 +88,17 @@ public class CalculatorUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    private void setDisplayValue(double value) {
+        if (value > 1e10) {
+            display.setText("Value too large");
+        } else if (value < -1e10) {
+            display.setText("Value too small");
+        } else {
+            DecimalFormat df = new DecimalFormat("#.###############");
+            display.setText(df.format(value));
+        }
+    }
+
     public static void main(String[] args) {
         FlatMacDarkLaf.setup();
 
@@ -95,6 +108,8 @@ public class CalculatorUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
+        String currentText = display.getText();
+        String newText = currentText.equals("0") ? cmd : currentText + cmd;
 
         try {
             switch (cmd) {
@@ -108,10 +123,9 @@ public class CalculatorUI extends JFrame implements ActionListener {
                 case "7":
                 case "8":
                 case "9":
-                    if (display.getText().equals("0")) {
-                        display.setText(cmd);
-                    } else {
-                        display.setText(display.getText() + cmd);
+                    String digitsOnly = newText.replaceAll("[^0-9]", "");
+                    if (digitsOnly.length() <= 10) {
+                        display.setText(newText);
                     }
                     break;
 
@@ -146,17 +160,12 @@ public class CalculatorUI extends JFrame implements ActionListener {
                             result = (num2 != 0) ? num1 / num2 : 0;
                             break;
                     }
-                    display.setText(String.valueOf(result));
+                    setDisplayValue(result);
                     break;
 
                 case "%":
                     double current = Double.parseDouble(display.getText());
-                    if (operator != null && !operator.isEmpty()) {
-                        current = (num1 * current) / 100;
-                        display.setText(String.valueOf(current));
-                    } else {
-                        display.setText(String.valueOf(current / 100));
-                    }
+                    setDisplayValue(current / 100);
                     break;
 
                 case "C":
@@ -181,23 +190,23 @@ public class CalculatorUI extends JFrame implements ActionListener {
 
                 case "±":
                     double val = Double.parseDouble(display.getText());
-                    display.setText(String.valueOf(-val));
+                    setDisplayValue(-val);
                     break;
 
                 case "x²":
                     double square = Double.parseDouble(display.getText());
-                    display.setText(String.valueOf(square * square));
+                    setDisplayValue(square * square);
                     break;
 
                 case "√x":
                     double sqrt = Double.parseDouble(display.getText());
-                    display.setText(String.valueOf(Math.sqrt(sqrt)));
+                    setDisplayValue(Math.sqrt(sqrt));
                     break;
 
                 case "1/x":
                     double x = Double.parseDouble(display.getText());
                     if (x != 0) {
-                        display.setText(String.valueOf(1 / x));
+                        setDisplayValue(1 / x);
                     } else {
                         display.setText("Error");
                     }
