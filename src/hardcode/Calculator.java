@@ -4,10 +4,7 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
 import java.text.DecimalFormat;
-
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class Calculator extends JFrame {
 
@@ -21,8 +18,6 @@ public class Calculator extends JFrame {
         setIconImage(icon);
 
         this.setSize(350, 450);
-
-        this.setSize(380, 550);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
