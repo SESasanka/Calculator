@@ -4,7 +4,9 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import java.text.DecimalFormat;
+
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class Calculator extends JFrame {
@@ -17,13 +19,18 @@ public class Calculator extends JFrame {
         this.setTitle("My Calculator");
         Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\sasan\\Downloads\\cal.png");
         setIconImage(icon);
+
         this.setSize(350, 450);
+
+        this.setSize(380, 550);
+
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel();
+
         topPanel.setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Standard Calculator");
@@ -33,16 +40,20 @@ public class Calculator extends JFrame {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
 
         display = new JTextField("0");
-        display.setFont(new Font("Arial", Font.BOLD, 33));
+        display.setFont(new Font("Arial", Font.BOLD, 35));
+
         display.setHorizontalAlignment(SwingConstants.RIGHT);
         display.setEditable(false);
         display.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         topPanel.add(display);
+
         topPanel.add(titleLabel);
 
         topPanel.add(titleLabel, BorderLayout.NORTH);
         topPanel.add(display, BorderLayout.SOUTH);
         this.add(topPanel, BorderLayout.NORTH);
+
+        add(topPanel, BorderLayout.NORTH);
 
         // Button Panel
         JPanel panel = new JPanel(new GridLayout(6, 4, 5, 5));
@@ -163,8 +174,12 @@ public class Calculator extends JFrame {
 //                case "%" ->
 //                    result = (num1 * num2) / 100;
             }
+
             setDisplayValue(result);
 //            display.setText(String.valueOf(result));
+
+            display.setText(String.valueOf(result));
+
             operator = "";
         }
     }
@@ -173,8 +188,12 @@ public class Calculator extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
+
             setDisplayValue(val / 100);
 //            display.setText(String.valueOf(val / 100));
+
+            display.setText(String.valueOf(val / 100));
+
         }
     }
 
@@ -220,7 +239,11 @@ public class Calculator extends JFrame {
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
             if (val != 0) {
+
                 setDisplayValue(1 / val);
+
+                display.setText(String.valueOf(1 / val));
+
             } else {
                 display.setText("Error");
             }
@@ -231,7 +254,11 @@ public class Calculator extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
+
             setDisplayValue(val * val);
+
+            display.setText(String.valueOf(val * val));
+
         }
     }
 
@@ -240,7 +267,11 @@ public class Calculator extends JFrame {
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
             if (val >= 0) {
+
                 setDisplayValue(Math.sqrt(val));
+
+                display.setText(String.valueOf(Math.sqrt(val)));
+
             } else {
                 display.setText("Error");
             }
@@ -251,7 +282,11 @@ public class Calculator extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             double val = Double.parseDouble(display.getText());
+
             setDisplayValue(-val);
+
+            display.setText(String.valueOf(-val));
+
         }
     }
 
